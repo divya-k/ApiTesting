@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="APItesting.APItesting.shribabu">
+      <class name="APItesting.APItesting.oAuthTest">
         <methods>
-          <include name="getAccessToken"/>
+          <include name="oAuthTestm"/>
         </methods>
-      </class> <!-- APItesting.APItesting.shribabu -->
+      </class> <!-- APItesting.APItesting.oAuthTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

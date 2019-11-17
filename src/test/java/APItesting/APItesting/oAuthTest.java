@@ -1,5 +1,6 @@
 package APItesting.APItesting;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -7,9 +8,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
+import pojo.Api;
+import pojo.GetCourse;
+import pojo.WebAutomation;
 @Test
 public class oAuthTest {
 
@@ -61,17 +70,39 @@ String accessToken = jsonPath.getString("access_token");
 
 System.out.println(accessToken);
 
-String r2=    given().contentType("application/json").queryParams("access_token", accessToken).expect().defaultParser(Parser.JSON)
+//String r2
+ GetCourse gc = given().contentType("application/json").queryParams("access_token", accessToken).expect().defaultParser(Parser.JSON)
 
 .when()
 
        .get("https://rahulshettyacademy.com/getCourse.php")
 
-.asString();
+//.asString();
+       .as(GetCourse.class);
 
-System.out.println(r2);
-
-
+//System.out.println(r2);
+ System.out.println(gc.getLinkedIn());
+ System.out.println(gc.getInstructor());
+ System.out.println(gc.getCourses().getApi().get(1).getCourseTitle());
+ 
+ List<Api> apiCourses = gc.getCourses().getApi();
+ for(int i=0;i<apiCourses.size();i++) {
+	 if(apiCourses.get(i).getCourseTitle().equalsIgnoreCase("SoapUI Webservices testing")) {
+		 System.out.println(apiCourses.get(i).getPrice());
+	 }
+ }
+ String[] courseTitles= {"Selenium Webdriver Java","Cypress","Protractor"};
+ ArrayList<String> a = new ArrayList<String>();
+ 
+ List<WebAutomation> webAutomationCourses = gc.getCourses().getWebAutomation();
+ for(int i=0;i<webAutomationCourses.size();i++) {
+	
+		 System.out.println(webAutomationCourses.get(i).getCourseTitle());
+		 a.add(webAutomationCourses.get(i).getCourseTitle());
+	 
+ }
+ List<String> expected = Arrays.asList(courseTitles);
+ Assert.assertTrue(a.equals(expected));
 	}
 }
 
